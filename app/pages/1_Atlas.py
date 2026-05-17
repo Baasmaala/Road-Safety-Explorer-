@@ -31,9 +31,9 @@ from utils.theme import (
     apply_plotly_theme,
 )
 from utils.layout import render_sidebar
-# ============================================================
+# 
 # PAGE CONFIG
-# ============================================================
+
 st.set_page_config(
     page_title="Atlas — Road Safety Explorer",
     page_icon="◯",
@@ -46,15 +46,12 @@ apply_plotly_theme()
 render_sidebar()
 
 
-# ============================================================
 # ISO3 → COUNTRY NAME LOOKUP
 
 
-# ============================================================
 # ISO3 → COUNTRY NAME LOOKUP
 # Embedded so we never depend on the CSVs having a name column.
 # Covers every UN country + WHO-reported territory.
-# ============================================================
 ISO3_TO_NAME = {
     "AFG": "Afghanistan", "ALB": "Albania", "DZA": "Algeria", "AND": "Andorra",
     "AGO": "Angola", "ATG": "Antigua and Barbuda", "ARG": "Argentina",
@@ -121,9 +118,7 @@ def name_of(iso3: str) -> str:
     return ISO3_TO_NAME.get(iso3, iso3)
 
 
-# ============================================================
 # STYLES — keep the homepage's bold modernist feel
-# ============================================================
 st.markdown(
     f"""
     <style>
@@ -278,9 +273,7 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# ============================================================
 # DATA LOADING
-# ============================================================
 DATA_DIR = APP_DIR.parent / "data" / "processed"
 
 
@@ -346,11 +339,9 @@ NON_INDICATOR = {"ISO", "Cluster", "Cluster_name", "Country", "Country name", "E
 indicator_cols = [c for c in df.columns if c not in NON_INDICATOR and pd.api.types.is_numeric_dtype(df[c])]
 
 
-# ============================================================
 # COUNTRY BRIEF — helpers
 # Same 6 themes used on the Compare page, so the recommendation logic
 # stays consistent between pages.
-# ============================================================
 THEME_KEYWORDS = {
     "Legislation": ["law", "legislation", "limit", "bac", "speed limit",
                     "helmet", "seatbelt", "seat-belt", "child restraint",
@@ -493,9 +484,7 @@ def _trend_direction_word(change_pct):
     return "was roughly flat"
 
 
-# ============================================================
 # HEADER
-# ============================================================
 st.markdown(
     """
     <div class="eyebrow"><span class="marker"></span><span>01 / Atlas</span></div>
@@ -510,9 +499,7 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# ============================================================
 # CONTROLS
-# ============================================================
 col_a, col_b = st.columns([1, 2])
 
 with col_a:
@@ -533,9 +520,7 @@ with col_b:
     else:
         selected_indicator = None
 
-# ============================================================
 # BUILD THE CHOROPLETH
-# ============================================================
 fig = go.Figure()
 
 if mode == "By group":
@@ -634,14 +619,12 @@ st.plotly_chart(
     },
 )
 
-# ============================================================
 # COUNTRY DETAIL — redesigned
 #   1. Pick a country (full name dropdown)
 #   2. Country name + group tag
 #   3. Country brief — auto-generated report + recommendations
 #   4. Other countries in the same group (chips)
 #   5. Measurement-by-measurement comparison: this country vs. group average
-# ============================================================
 st.markdown("<br>", unsafe_allow_html=True)
 st.markdown(
     '<div class="eyebrow"><span class="marker"></span><span>Country detail</span></div>',
@@ -889,9 +872,7 @@ for ind in indicator_cols:
 comparison_df = pd.DataFrame(comparison_rows)
 st.dataframe(comparison_df, use_container_width=True, hide_index=True, height=460)
 
-# ============================================================
 # FOOTER NOTE — technical methodology stays here only
-# ============================================================
 st.markdown(
     f"""
     <div style="margin-top:60px; padding-top:24px; border-top:1px solid {COLORS['rule']};

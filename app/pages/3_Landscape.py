@@ -33,9 +33,7 @@ from utils.theme import (
 )
 from utils.layout import render_sidebar
 
-# ============================================================
 # PAGE CONFIG
-# ============================================================
 st.set_page_config(
     page_title="Landscape — Road Safety Explorer",
     page_icon="◯",
@@ -46,9 +44,7 @@ st.set_page_config(
 apply_plotly_theme()
 render_sidebar()
 
-# ============================================================
 # STYLES — match Atlas
-# ============================================================
 st.markdown(
     f"""
     <style>
@@ -157,9 +153,7 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# ============================================================
 # DATA LOADING
-# ============================================================
 DATA_DIR = APP_DIR.parent / "data" / "processed"
 
 
@@ -197,9 +191,7 @@ pca_df, anom_df = load_data()
 # Mark which countries are anomalies in the master frame
 pca_df["is_anomaly"] = pca_df["is_anomaly"].astype(bool)
 
-# ============================================================
 # HEADER
-# ============================================================
 st.markdown(
     """
     <div class="eyebrow"><span class="marker"></span><span>03 / Landscape</span></div>
@@ -215,9 +207,7 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# ============================================================
 # SCATTER PLOT
-# ============================================================
 fig = go.Figure()
 
 # One trace per group — only NON-anomalies, as circles
@@ -339,9 +329,7 @@ fig.update_layout(
 
 st.plotly_chart(fig, use_container_width=True, config={"displaylogo": False})
 
-# ============================================================
 # COUNTRY PICKER + DETAIL CARD
-# ============================================================
 st.markdown(
     '<div class="eyebrow"><span class="marker"></span><span>Inspect a country</span></div>',
     unsafe_allow_html=True,
@@ -478,9 +466,7 @@ with col_card:
         unsafe_allow_html=True,
     )
 
-# ============================================================
 # FULL UNUSUAL-COUNTRY LIST
-# ============================================================
 st.markdown(
     '<div class="eyebrow" style="margin-top:36px;"><span class="marker"></span><span>All unusual countries</span></div>',
     unsafe_allow_html=True,
@@ -508,9 +494,7 @@ for _, ar in anom_sorted.iterrows():
     )
 st.markdown("".join(rows_html), unsafe_allow_html=True)
 
-# ============================================================
 # FOOTER NOTE — technical methodology stays here only
-# ============================================================
 st.markdown(
     f"""
     <div style="margin-top:60px; padding-top:24px; border-top:1px solid {COLORS['rule']};

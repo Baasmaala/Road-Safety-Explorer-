@@ -33,9 +33,7 @@ from utils.theme import (
 )
 from utils.layout import render_sidebar
 
-# ============================================================
 # PAGE CONFIG
-# ============================================================
 st.set_page_config(
     page_title="Compare — Road Safety Explorer",
     page_icon="◯",
@@ -46,9 +44,7 @@ st.set_page_config(
 apply_plotly_theme()
 render_sidebar()
 
-# ============================================================
 # ISO3 → NAME LOOKUP (same as Atlas — embedded so we never depend on CSVs)
-# ============================================================
 ISO3_TO_NAME = {
     "AFG": "Afghanistan", "ALB": "Albania", "DZA": "Algeria", "AND": "Andorra",
     "AGO": "Angola", "ATG": "Antigua and Barbuda", "ARG": "Argentina",
@@ -157,9 +153,7 @@ def classify_indicator(col_name: str) -> str | None:
     return None
 
 
-# ============================================================
 # STYLES — match Atlas
-# ============================================================
 st.markdown(
     f"""
     <style>
@@ -245,9 +239,7 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# ============================================================
 # DATA LOADING
-# ============================================================
 DATA_DIR = APP_DIR.parent / "data" / "processed"
 
 
@@ -292,9 +284,7 @@ indicator_cols = [
     if c not in NON_INDICATOR and pd.api.types.is_numeric_dtype(df[c])
 ]
 
-# ============================================================
 # BUILD THE THEME SCORES
-# ============================================================
 # 1. Scale each measurement to 0–1 across all 171 countries
 normalized = df[indicator_cols].copy()
 for col in indicator_cols:
@@ -327,9 +317,7 @@ theme_scores["Cluster_name"] = df["Cluster_name"]
 for theme, cols in theme_to_indicators.items():
     theme_scores[theme] = normalized[cols].mean(axis=1, skipna=True)
 
-# ============================================================
 # HEADER
-# ============================================================
 st.markdown(
     """
     <div class="eyebrow"><span class="marker"></span><span>02 / Compare</span></div>
@@ -344,9 +332,7 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# ============================================================
 # CONTROLS
-# ============================================================
 country_list = sorted(theme_scores["Country"].dropna().unique().tolist())
 
 col_a, col_b = st.columns([1, 2])
@@ -395,9 +381,7 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# ============================================================
 # BUILD THE RADAR
-# ============================================================
 theme_axes = list(theme_to_indicators.keys())
 
 fig = go.Figure()
@@ -485,9 +469,7 @@ fig.update_layout(
 
 st.plotly_chart(fig, use_container_width=True, config={"displaylogo": False})
 
-# ============================================================
 # THEME SCORE TABLE
-# ============================================================
 st.markdown(
     '<div class="eyebrow"><span class="marker"></span><span>Theme scores</span></div>',
     unsafe_allow_html=True,
@@ -515,9 +497,7 @@ st.dataframe(
     hide_index=True,
 )
 
-# ============================================================
 # WHAT'S IN EACH THEME (expander)
-# ============================================================
 with st.expander("How themes are built (which measurements go into each)"):
     for theme, cols in theme_to_indicators.items():
         st.markdown(f"**{theme}** ({len(cols)} measurements)")
@@ -528,9 +508,7 @@ with st.expander("How themes are built (which measurements go into each)"):
         for c in unclassified:
             st.markdown(f"- {c}")
 
-# ============================================================
 # FOOTER NOTE — technical methodology stays here only
-# ============================================================
 st.markdown(
     f"""
     <div style="margin-top:60px; padding-top:24px; border-top:1px solid {COLORS['rule']};
