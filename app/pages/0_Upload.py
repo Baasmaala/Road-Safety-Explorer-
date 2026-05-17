@@ -29,9 +29,7 @@ from utils.upload_pipeline import (
     project_to_2d,
 )
 
-# ============================================================
 # PAGE CONFIG
-# ============================================================
 st.set_page_config(
     page_title="Upload — Road Safety Explorer",
     page_icon="◯",
@@ -42,9 +40,7 @@ st.set_page_config(
 apply_plotly_theme()
 render_sidebar()
 
-# ============================================================
 # STYLES
-# ============================================================
 st.markdown(
     f"""
     <style>
@@ -176,9 +172,8 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# ============================================================
 # HEADER
-# ============================================================
+
 st.markdown(
     """
     <div class="eyebrow"><span class="marker"></span><span>00 / Upload</span></div>
@@ -194,9 +189,7 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# ============================================================
 # INSTRUCTIONS
-# ============================================================
 st.markdown(
     """
     <div class="instruction-box">
@@ -221,9 +214,7 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# ============================================================
 # FILE UPLOADER
-# ============================================================
 uploaded = st.file_uploader(
     "Drop a CSV here",
     type=["csv"],
@@ -243,18 +234,14 @@ if uploaded is None:
     )
     st.stop()
 
-# ============================================================
 # READ THE FILE
-# ============================================================
 try:
     raw = pd.read_csv(uploaded)
 except Exception as e:
     st.error(f"Couldn't read this file as CSV: {e}")
     st.stop()
 
-# ============================================================
 # DETECT FORMAT + RUN THE PIPELINE
-# ============================================================
 WHO_REF_PATH = APP_DIR.parent / "data" / "processed" / "country_features.csv"
 format_mode = detect_format(raw, WHO_REF_PATH) if WHO_REF_PATH.exists() else "generic"
 
@@ -286,9 +273,7 @@ results.index.name = "Country"
 # Group sizes
 sizes = {int(c): int((labels_df["Cluster"] == c).sum()) for c in sorted(labels_df["Cluster"].unique())}
 
-# ============================================================
 # CLEANING SUMMARY
-# ============================================================
 st.markdown(
     '<div class="eyebrow"><span class="marker"></span><span>Cleaning summary</span></div>',
     unsafe_allow_html=True,
@@ -345,9 +330,8 @@ if dropped_cols or constant_cols or outlier_cols:
             st.markdown(f"**Skewed columns dropped** ({len(outlier_cols)} — extremely uneven distribution): "
                         + ", ".join(f"`{c}`" for c in outlier_cols))
 
-# ============================================================
 # MODE TAG
-# ============================================================
+
 if format_mode == "who":
     mode_label = "WHO format detected — using shared group profiles"
 else:
@@ -358,9 +342,7 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# ============================================================
 # GROUP LANDSCAPE
-# ============================================================
 st.markdown(
     '<div class="eyebrow" style="margin-top:12px;"><span class="marker"></span><span>Group landscape</span></div>',
     unsafe_allow_html=True,
@@ -441,9 +423,7 @@ fig.update_layout(
 )
 st.plotly_chart(fig, use_container_width=True, config={"displaylogo": False})
 
-# ============================================================
 # GROUP SUMMARY (sizes + sample members)
-# ============================================================
 st.markdown(
     '<div class="eyebrow" style="margin-top:36px;"><span class="marker"></span><span>Group breakdown</span></div>',
     unsafe_allow_html=True,
@@ -468,9 +448,8 @@ for i, cid in enumerate(sorted(sizes.keys())):
             unsafe_allow_html=True,
         )
 
-# ============================================================
 # RESULTS TABLE + DOWNLOAD
-# ============================================================
+
 st.markdown(
     '<div class="eyebrow" style="margin-top:36px;"><span class="marker"></span><span>All countries</span></div>',
     unsafe_allow_html=True,
@@ -501,9 +480,7 @@ st.download_button(
     mime="text/csv",
 )
 
-# ============================================================
 # FOOTER NOTE — technical methodology stays here only
-# ============================================================
 st.markdown(
     f"""
     <div style="margin-top:60px; padding-top:24px; border-top:1px solid {COLORS['rule']};

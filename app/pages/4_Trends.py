@@ -29,9 +29,7 @@ sys.path.insert(0, str(APP_DIR))
 from utils.theme import COLORS, CLUSTER_COLORS, CLUSTER_NAMES, FONTS, apply_plotly_theme
 from utils.layout import render_sidebar
 
-# ============================================================
 # PAGE CONFIG
-# ============================================================
 st.set_page_config(
     page_title="Trends — Road Safety Explorer",
     page_icon="◯",
@@ -42,9 +40,7 @@ st.set_page_config(
 apply_plotly_theme()
 render_sidebar()
 
-# ============================================================
 # STYLES — match the other pages
-# ============================================================
 st.markdown(
     f"""
     <style>
@@ -157,9 +153,7 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# ============================================================
 # DATA LOADING
-# ============================================================
 DATA_DIR = APP_DIR.parent / "data" / "processed"
 
 
@@ -186,9 +180,7 @@ def load_data():
 
 fc_df, anom_df = load_data()
 
-# ============================================================
 # HEADER
-# ============================================================
 st.markdown(
     """
     <div class="eyebrow"><span class="marker"></span><span>04 / Trends</span></div>
@@ -203,9 +195,7 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# ============================================================
 # CONTROLS
-# ============================================================
 country_list = sorted(fc_df["Entity"].dropna().unique().tolist())
 default_country = "Palestine" if "Palestine" in country_list else country_list[0]
 
@@ -235,9 +225,8 @@ with col_c:
         horizontal=False,
     )
 
-# ============================================================
 # DATA HELPERS
-# ============================================================
+
 def get_country_series(country: str, metric: str) -> dict:
     """
     Pull a country's observed history + 3-year projection + likely range.
@@ -285,9 +274,7 @@ def get_anomalies(country: str) -> pd.DataFrame:
     return anom_df[anom_df["Entity"] == country].sort_values("Year")
 
 
-# ============================================================
 # BUILD THE MAIN CHART
-# ============================================================
 fig = go.Figure()
 
 # Peer countries first (so they sit beneath the anchor visually)
@@ -466,9 +453,7 @@ fig.update_layout(
 
 st.plotly_chart(fig, use_container_width=True, config={"displaylogo": False})
 
-# ============================================================
 # AT-A-GLANCE STATS for the anchor country
-# ============================================================
 obs_y = anchor["y_obs"]
 first_val = float(obs_y[0]) if len(obs_y) else None
 last_val = float(obs_y[-1]) if len(obs_y) else None
@@ -515,9 +500,7 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# ============================================================
 # UNUSUAL YEARS for the anchor country
-# ============================================================
 st.markdown(
     '<div class="eyebrow"><span class="marker"></span><span>Unusual years</span></div>',
     unsafe_allow_html=True,
@@ -554,9 +537,8 @@ else:
         )
     st.markdown("".join(rows_html), unsafe_allow_html=True)
 
-# ============================================================
 # FOOTER NOTE — technical methodology stays here only
-# ============================================================
+
 st.markdown(
     f"""
     <div style="margin-top:60px; padding-top:24px; border-top:1px solid {COLORS['rule']};
